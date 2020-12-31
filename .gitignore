@@ -1,3 +1,5 @@
 .DS_Store
 config.json
 swagger/swagger.json
+.ipynb_checkpoints/
+automl_errors.log

@@ -27,6 +27,37 @@ The general process of operationalizing machine learning on Azure is the followi
 13. Check the Swagger documentation for the webservice endpoint
 14. Benchmark the webservice endpoint
 
+We will start with the standard steps by creating an experiment in the workspace and setting up the compute cluster in the workpace by running the following lines of code for the Azure SDK
+
+```python
+
+ws = Workspace.from_config()
+print(ws.name, ws.resource_group, ws.location, ws.subscription_id, sep="\n")
+
+
+experiment_name = "bank-marketing-prediction-automl"
+experiment = Experiment(ws, experiment_name)
+
+ Choose a name for your CPU cluster
+amlcompute_cluster_name = "automl-compute"
+
+# Verify that cluster does not exist already
+try:
+    compute_target = ComputeTarget(workspace=ws, name=amlcompute_cluster_name)
+    print("Found existing cluster, use it.")
+except ComputeTargetException:
+    compute_config = AmlCompute.provisioning_configuration(
+        vm_size="STANDARD_D2_V2",  # for GPU, use "STANDARD_NC6" 
+        max_nodes=4,
+    )
+    compute_target = ComputeTarget.create(ws, amlcompute_cluster_name, compute_config)
+```
+
+We can verify in the workspace the correct resources are created
+
+For the experiment,
+
+
 ## Screen Recording
 *TODO* Provide a link to a screen recording of the project in action. Remember that the screencast should demonstrate:
 
