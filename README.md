@@ -299,6 +299,18 @@ Response
 
 ![Screenshot](images/swagger_3.png)
 
+(Step 14 optional) We can also use apache's benchmark functionality to view if our API is having any irregularities
+
+We can type in the following command in the terminal
+
+``` ab -n 10 -v 4 -p data.json -T 'application/json' -H 'Authorization: Bearer PRIMARY_KEY' SCORE_URI```
+
+(remember to replace key and scoring URI)
+
+Then the benchmark stats will shown in the terminal which looks like the following
+
+![Screenshot](images/benchmarking.png)
+
 
 ## Screen Recording
 *TODO* Provide a link to a screen recording of the project in action. Remember that the screencast should demonstrate:
