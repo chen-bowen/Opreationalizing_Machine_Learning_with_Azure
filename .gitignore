@@ -4,3 +4,5 @@ swagger/swagger.json
 .ipynb_checkpoints/
 automl_errors.log
 data.json
+env/
+azureml/

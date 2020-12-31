@@ -146,6 +146,58 @@ Let's quickly verify the completion of the pipeline we just submitted
 
 ![Screenshot](images/Completed%20Pipeline.png)
 
+Also taking a look at the best model produced by AutoML
+
+![Screenshot](images/Completed%20Best%20Model.png)
+
+(step 7, 8) We can also explore the results for the autoML run in the notebook
+
+One interesting thing to look like is the explanation for the best model. The following screenshot shows the importance of each feature
+
+![Screenshot](images/Explanation.png)
+
+Here is another one, this visualization shows the range of the value that could contribute to model predicting a certain class
+
+![Screenshot](images/Explanation_2.png)
+
+(step 9) Next we will proceed to publishing the pipeline as an endpoint. This could be accomplished by the following commands 
+
+```python
+
+published_pipeline = pipeline_run.publish_pipeline(
+    name="Bankmarketing Train", description="Training bankmarketing pipeline", version="1.0") 
+```
+
+We will also retrieve the authentication header so the pipeline endpoint can be used
+
+```python
+interactive_auth = InteractiveLoginAuthentication()
+auth_header = interactive_auth.get_authentication_header()
+```
+
+We can verify if the pipeline endpoint is indeed created
+
+![Screenshot](images/Published%20Pipeline%20Endpoints.png)
+
+(step 10) This endpoint could be consumed using JSON payload, which will trigger another scheduled AutoML run
+
+```python
+# retrieve the endpoint URI
+rest_endpoint = published_pipeline.endpoint
+# post a request to the endpoint
+response = requests.post(rest_endpoint, 
+                         headers=auth_header, 
+                         json={"ExperimentName": "pipeline-rest-endpoint"}
+                        )
+```
+This will trigger another identical AutoML run, we can quickly verify that (shown as completed as well)
+
+![Screenshot](images/Completed%20Pipeline%20endpoint.png)
+
+(step 11) We will also deploy the best model as a web service. This could be easily accomplished by clicking the "Deploy" button 
+
+
+
 
 ## Screen Recording
 *TODO* Provide a link to a screen recording of the project in action. Remember that the screencast should demonstrate:
