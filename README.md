@@ -6,7 +6,7 @@ In this project, we will use the hybrid of Azure Machine Learning SDK and Azure 
 
 ## Architectural Diagram
 
-![Screenshot](images/architecture.png)
+![Screenshot](images/Architecture.png)
 
 ## Key Steps
 
