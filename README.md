@@ -27,7 +27,7 @@ The general process of operationalizing machine learning on Azure is the followi
 13. Check the Swagger documentation for the webservice endpoint
 14. Benchmark the webservice endpoint
 
-We will start with the standard steps by creating an experiment in the workspace and setting up the compute cluster in the workpace by running the following lines of code for the Azure SDK
+(step 1, 2) We will start with the standard steps by creating an experiment in the workspace and setting up the compute cluster in the workpace by running the following lines of code for the Azure SDK
 
 ```python
 
@@ -38,7 +38,7 @@ print(ws.name, ws.resource_group, ws.location, ws.subscription_id, sep="\n")
 experiment_name = "bank-marketing-prediction-automl"
 experiment = Experiment(ws, experiment_name)
 
- Choose a name for your CPU cluster
+# Choose a name for your CPU cluster
 amlcompute_cluster_name = "automl-compute"
 
 # Verify that cluster does not exist already
@@ -58,12 +58,93 @@ We can verify in the workspace the correct resources are created
 Experiment (shown as completed)
 ![Screenshot](images/Completed%20experiment.png)
 
-We will then load in the data by running the following lines from the SDK
+(step 3) We will then load in the data by running the following lines from the SDK
 
 ```python
+found = False
+key = "Bank-marketing"
+description_text = "Bank Marketing DataSet for Udacity Course 2"
 
+if key in ws.datasets.keys():
+    print("Found existing dataset, using")
+    found = True
+    dataset = ws.datasets[key]
 
+if not found:
+    # Create AML Dataset and register it into Workspace
+    print(f"Did not find existing dataset with key {key}, creating")
+    example_data = "https://automlsamplenotebookdata.blob.core.windows.net/automl-sample-notebook-data/bankmarketing_train.csv"
+    dataset = Dataset.Tabular.from_delimited_files(example_data)
+    # Register Dataset in Workspace
+    dataset = dataset.register(workspace=ws, name=key, description=description_text)
 ```
+This will load in the dataset if it's already in the workspace, otherwise it will create the dataset from that linked datasource
+Let's verify if it has been suceessfully created
+
+![Screenshot](images/Dataset%20verification.png)
+
+(step 4, 5) We can then proceed to creating the configurations of the AutoML pipeline. Start by running the following lines in the SDK
+
+```python
+automl_settings = {
+    "experiment_timeout_minutes": 20,
+    "max_concurrent_iterations": 4,
+    "primary_metric": "AUC_weighted",
+}
+automl_config = AutoMLConfig(
+    compute_target=compute_target,
+    task="classification",
+    training_data=dataset,
+    label_column_name="y",
+    path=project_folder,
+    enable_early_stopping=True,
+    featurization="auto",
+    debug_log="automl_errors.log",
+    model_explainability=True,
+    **automl_settings
+)
+
+# define outputs
+ds = ws.get_default_datastore()
+metrics_output_name = "metrics_output"
+best_model_output_name = "best_model_output"
+
+metrics_data = PipelineData(
+    name="metrics_data",
+    datastore=ds,
+    pipeline_output_name=metrics_output_name,
+    training_output=TrainingOutput(type="Metrics"),
+)
+model_data = PipelineData(
+    name="model_data",
+    datastore=ds,
+    pipeline_output_name=best_model_output_name,
+    training_output=TrainingOutput(type="Model"),
+)
+
+# create AutoML step
+automl_step = AutoMLStep(
+    name="automl_module",
+    automl_config=automl_config,
+    outputs=[metrics_data, model_data],
+    allow_reuse=True,
+)
+
+# create pipeline
+pipeline = Pipeline(
+    description="pipeline_with_automlstep", workspace=ws, steps=[automl_step]
+)
+```
+
+(step 6) We can submit the pipeline for execution 
+
+```python
+pipeline_run = experiment.submit(pipeline)
+```
+
+Let's quickly verify the completion of the pipeline we just submitted
+
+![Screenshot](images/Completed%20Pipeline.png)
 
 
 ## Screen Recording
