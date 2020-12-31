@@ -196,6 +196,94 @@ This will trigger another identical AutoML run, we can quickly verify that (show
 
 (step 11) We will also deploy the best model as a web service. This could be easily accomplished by clicking the "Deploy" button 
 
+We can see now the best model has been deployed as a web service
+
+![Screenshot](images/Deployed%20Best%20Model.png)
+
+At the same time, since we have enabled application insights, the logging URL is also provided
+
+(step 12) We can also mannually trigger the logging to be enabled by running the file `logs.py`. The file will enable logging (from the below line) and print out the logs in the terminal 
+
+```python
+service.update(enable_app_insights=True)
+```
+
+The logs printed looks like the following
+
+![Screenshot](images/Running%20Logs.png)
+
+Once deployed, the endpoint could be consumed by sending through some sample payloads. We will create an `endpoint.py` file that contains 2 sample datapoints
+
+```python
+data = {
+    "data": [
+        {
+            "age": 17,
+            "campaign": 1,
+            "cons.conf.idx": -46.2,
+            "cons.price.idx": 92.893,
+            "contact": "cellular",
+            "day_of_week": "mon",
+            "default": "no",
+            "duration": 971,
+            "education": "university.degree",
+            "emp.var.rate": -1.8,
+            "euribor3m": 1.299,
+            "housing": "yes",
+            "job": "blue-collar",
+            "loan": "yes",
+            "marital": "married",
+            "month": "may",
+            "nr.employed": 5099.1,
+            "pdays": 999,
+            "poutcome": "failure",
+            "previous": 1,
+        },
+        {
+            "age": 87,
+            "campaign": 1,
+            "cons.conf.idx": -46.2,
+            "cons.price.idx": 92.893,
+            "contact": "cellular",
+            "day_of_week": "mon",
+            "default": "no",
+            "duration": 471,
+            "education": "university.degree",
+            "emp.var.rate": -1.8,
+            "euribor3m": 1.299,
+            "housing": "yes",
+            "job": "blue-collar",
+            "loan": "yes",
+            "marital": "married",
+            "month": "may",
+            "nr.employed": 5099.1,
+            "pdays": 999,
+            "poutcome": "failure",
+            "previous": 1,
+        },
+    ]
+}
+# Convert to JSON string
+input_data = json.dumps(data)
+with open("data.json", "w") as _f:
+    _f.write(input_data)
+
+# Set the content type
+headers = {"Content-Type": "application/json"}
+# If authentication is enabled, set the authorization header
+headers["Authorization"] = f"Bearer {key}"
+
+# Make the request and display the response
+resp = requests.post(scoring_uri, input_data, headers=headers)
+print(resp.json())
+```
+
+If the endpoint is fully functional, the response will directly show whether the customer is likely to subscribe a term deposit in the future
+
+
+![Screenshot](images/endpoint%20response.png)
+
+(step 13)
 
 
 

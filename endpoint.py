@@ -1,13 +1,17 @@
 import requests
 import json
+from azureml.core.webservice import Webservice
+from azureml.core.workspace import Workspace
 
 # URL for the web service, should be similar to:
 # 'http://8530a665-66f3-49c8-a953-b82a2d312917.eastus.azurecontainer.io/score'
-scoring_uri = (
-    "http://05de123b-0803-4c6c-8b0b-6ba84fed26af.southcentralus.azurecontainer.io/score"
-)
+
+ws = Workspace.from_config()
+deployed_webservice = Webservice.list(ws)[0]
+scoring_uri = deployed_webservice.scoring_uri
+
 # If the service is authenticated, set the key or token
-key = "SECRET"
+key = deployed_webservice.get_keys()[0]
 
 # Two sets of data to score, so we get two results back
 data = {
@@ -71,4 +75,3 @@ headers["Authorization"] = f"Bearer {key}"
 # Make the request and display the response
 resp = requests.post(scoring_uri, input_data, headers=headers)
 print(resp.json())
-
