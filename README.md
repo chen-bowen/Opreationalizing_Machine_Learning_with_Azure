@@ -55,7 +55,15 @@ except ComputeTargetException:
 
 We can verify in the workspace the correct resources are created
 
-For the experiment,
+Experiment (shown as completed)
+![Screenshot](images/Completed%20experiment.png)
+
+We will then load in the data by running the following lines from the SDK
+
+```python
+
+
+```
 
 
 ## Screen Recording
