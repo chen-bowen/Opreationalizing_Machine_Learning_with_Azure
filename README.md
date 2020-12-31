@@ -283,8 +283,21 @@ If the endpoint is fully functional, the response will directly show whether the
 
 ![Screenshot](images/endpoint%20response.png)
 
-(step 13)
+(step 13) Swagger provided a simple way to understand the request and response format of the API. Azure ML provided a `swagger.json` file that allow us to run a swagger server in our local environment. On two separate terminal windows, we can run the `serve.py` and `swagger.sh` file, which allow us access swagger with our local host. We can then type in "https://localhost" into our browser, then swagger server will be loaded up. Then we will replace the default url with `http://localhost:8000/swagger.json` to view our API's documentation
 
+The swagger server looks like the following,
+
+![Screenshot](images/swagger.png)
+
+Our API's request and response format looks like the following
+
+Request
+
+![Screenshot](images/swagger_2.png)
+
+Response
+
+![Screenshot](images/swagger_3.png)
 
 
 ## Screen Recording
