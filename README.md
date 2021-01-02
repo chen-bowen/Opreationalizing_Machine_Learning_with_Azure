@@ -79,11 +79,11 @@ if not found:
     dataset = dataset.register(workspace=ws, name=key, description=description_text)
 ```
 This will load in the dataset if it's already in the workspace, otherwise it will create the dataset from that linked datasource
-Let's verify if it has been suceessfully created
+You can go to the `Dataset` tab to verify the dataset you just uploaded is sucessfully registered, a sample screenshot is shown below
 
 ![Screenshot](images/Dataset%20verification.png)
 
-(step 4, 5) We can then proceed to creating the configurations of the AutoML pipeline. Start by running the following lines in the SDK
+(step 4, 5) Create the configurations of the AutoML pipeline. Start by running the following lines in the SDK
 
 ```python
 automl_settings = {
@@ -136,21 +136,21 @@ pipeline = Pipeline(
 )
 ```
 
-(step 6) We can submit the pipeline for execution 
+(step 6) Submit the pipeline for execution 
 
 ```python
 pipeline_run = experiment.submit(pipeline)
 ```
 
-Let's quickly verify the completion of the pipeline we just submitted
+You can also find the pipeline you just submitted running in the Azure Machine Learning Studio UI
 
 ![Screenshot](images/Completed%20Pipeline.png)
 
-Also taking a look at the best model produced by AutoML
+Once the pipeline is completed, you can go to the models tab on the details page, a list of models executed by the AutoML module will be shown, with the best performing model coming up on top. You can click on the name of the model to check on its details.
 
 ![Screenshot](images/Completed%20Best%20Model.png)
 
-(step 7, 8) We can also explore the results for the autoML run in the notebook
+(step 7, 8) Since you have enabled model explanability, there will be an explanation produced for th best model. Some sample explanations are discussed below.
 
 One interesting thing to look like is the explanation for the best model. The following screenshot shows the importance of each feature
 
@@ -160,7 +160,7 @@ Here is another one, this visualization shows the range of the value that could 
 
 ![Screenshot](images/Explanation_2.png)
 
-(step 9) Next we will proceed to publishing the pipeline as an endpoint. This could be accomplished by the following commands 
+(step 9) To publish the pipeline as an endpoint, run following commands 
 
 ```python
 
@@ -168,18 +168,18 @@ published_pipeline = pipeline_run.publish_pipeline(
     name="Bankmarketing Train", description="Training bankmarketing pipeline", version="1.0") 
 ```
 
-We will also retrieve the authentication header so the pipeline endpoint can be used
+You will have to retrieve the authentication header for the pipeline endpoint to be consumeable
 
 ```python
 interactive_auth = InteractiveLoginAuthentication()
 auth_header = interactive_auth.get_authentication_header()
 ```
 
-We can verify if the pipeline endpoint is indeed created
+You can go to the `pipeline endpoints` tab (under `Endpoints` page on your left panel) to verify if your endpoint has been successfully created.
 
 ![Screenshot](images/Published%20Pipeline%20Endpoints.png)
  
- In the endpoints section, the pipeline status will be shown as active
+ If successful, the pipeline status will be shown as active
 
  ![Screenshot](images/Active%20Pipeline.png)
 
@@ -194,19 +194,19 @@ response = requests.post(rest_endpoint,
                          json={"ExperimentName": "pipeline-rest-endpoint"}
                         )
 ```
-This will trigger another identical AutoML run, we can quickly verify that (shown as completed as well)
+This will trigger another identical AutoML run, you can quickly verify that by going to the `Experiment` page, a new run will be scheduled, now the title on that experiment run will be called "pipeline rest-endpoint".
 
 ![Screenshot](images/Completed%20Pipeline%20endpoint.png)
 
-(step 11) We will also deploy the best model as a web service. This could be easily accomplished by clicking the "Deploy" button 
+(step 11) You can also deploy the best model as a web service. This could be easily accomplished by clicking the "Deploy" button 
 
-We can see now the best model has been deployed as a web service
+Once the deployment has been successful, the status on the details page will show the endpoint state as "Healthy"
 
 ![Screenshot](images/Deployed%20Best%20Model.png)
 
-At the same time, since we have enabled application insights, the logging URL is also provided
+At the same time, since you have enabled application insights, the logging URL is also provided
 
-(step 12) We can also mannually trigger the logging to be enabled by running the file `logs.py`. The file will enable logging (from the below line) and print out the logs in the terminal 
+(step 12) You can also mannually trigger the logging to be enabled by running the file `logs.py`. The file will enable logging (from the below line) and print out the logs in the terminal 
 
 ```python
 service.update(enable_app_insights=True)
@@ -295,7 +295,7 @@ If the endpoint is fully functional, the response will directly show whether the
 
 ![Screenshot](images/endpoint%20response.png)
 
-(step 13) Swagger provided a simple way to understand the request and response format of the API. Azure ML provided a `swagger.json` file that allow us to run a swagger server in our local environment. On two separate terminal windows, we can run the `serve.py` and `swagger.sh` file, which allow us access swagger with our local host. We can then type in "https://localhost" into our browser, then swagger server will be loaded up. Then we will replace the default url with `http://localhost:8000/swagger.json` to view our API's documentation
+(step 13) Swagger provided a simple way to understand the request and response format of the API. Azure ML provided a `swagger.json` file that allow us to run a swagger server in your local environment. On two separate terminal windows, you can run the `serve.py` and `swagger.sh` file, which allow us access swagger with our local host. You can then type in "https://localhost" into your browser, then swagger server will be loaded up. Then you will replace the default url with `http://localhost:8000/swagger.json` to view the API's documentation
 
 The swagger server looks like the following,
 
@@ -311,9 +311,9 @@ Response
 
 ![Screenshot](images/swagger_3.png)
 
-(Step 14 optional) We can also use apache's benchmark functionality to view if our API is having any irregularities
+(Step 14 optional) You can use apache's benchmark functionality to view if our API is having any irregularities
 
-We can type in the following command in the terminal
+Type in the following command in the terminal
 
 ``` ab -n 10 -v 4 -p data.json -T 'application/json' -H 'Authorization: Bearer PRIMARY_KEY' SCORE_URI```
 
@@ -326,9 +326,9 @@ Then the benchmark stats will shown in the terminal which looks like the followi
 All of the steps could be viewd in the jupyter notebook.
 
 ## Screen Recording
-You can watch a screencast demo from the link [here](https://youtu.be/nu0YWzkXIos) ~ 6 min
+You can watch a screencast demo from the link [here](https://youtu.be/nx3_LPhnGgI) ~ 5 min
 
-## Standout Suggestions
+## Future Improvements
 * getting the terminal commands into the jupyter notebook for better visualization purposes. 
 * obtain sensitive information (API URI and primary key) dynamically from code
 * Attempt to deploy the best model to ACI (wasn't successful)
