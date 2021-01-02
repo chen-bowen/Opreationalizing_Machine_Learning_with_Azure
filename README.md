@@ -181,7 +181,7 @@ We can verify if the pipeline endpoint is indeed created
  
  In the endpoints section, the pipeline status will be shown as active
 
- ![Screenshot](images/Active20Pipeline.png)
+ ![Screenshot](images/Active%20Pipeline.png)
 
 (step 10) This endpoint could be consumed using JSON payload, which will trigger another scheduled AutoML run
 
