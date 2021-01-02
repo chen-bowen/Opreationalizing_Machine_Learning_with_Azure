@@ -27,7 +27,7 @@ The general process of operationalizing machine learning on Azure is the followi
 13. Check the Swagger documentation for the webservice endpoint
 14. Benchmark the webservice endpoint
 
-(step 1, 2) We will start with the standard steps by creating an experiment in the workspace and setting up the compute cluster in the workpace by running the following lines of code for the Azure SDK
+(step 1, 2) To get started , create an experiment in the workspace and setting up the compute cluster in the workpace by running the following lines of code for the Azure SDK
 
 ```python
 
@@ -58,7 +58,7 @@ We can verify in the workspace the correct resources are created
 Experiment (shown as completed)
 ![Screenshot](images/Completed%20experiment.png)
 
-(step 3) We will then load in the data by running the following lines from the SDK
+(step 3) Load in the data by running the following lines from the SDK
 
 ```python
 found = False
@@ -178,6 +178,10 @@ auth_header = interactive_auth.get_authentication_header()
 We can verify if the pipeline endpoint is indeed created
 
 ![Screenshot](images/Published%20Pipeline%20Endpoints.png)
+ 
+ In the endpoints section, the pipeline status will be shown as active
+
+ ![Screenshot](images/Active20Pipeline.png)
 
 (step 10) This endpoint could be consumed using JSON payload, which will trigger another scheduled AutoML run
 
@@ -210,7 +214,15 @@ service.update(enable_app_insights=True)
 
 The logs printed looks like the following
 
-![Screenshot](images/Running%20Logs.png)
+![Screenshot](images/Full%20Logs.png)
+
+Inside the Azure Machine Learning Studio, you will also be able to see a link that provides the usage statics is given to you on the deployed endpoint details page
+
+![Screenshot](images/Application%20Insights%20Status.png)
+
+A sample application insights page is shown below
+
+![Screenshot](images/Application%20Insights.png)
 
 Once deployed, the endpoint could be consumed by sending through some sample payloads. We will create an `endpoint.py` file that contains 2 sample datapoints
 
