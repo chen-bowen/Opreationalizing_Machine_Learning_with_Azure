@@ -311,9 +311,12 @@ Then the benchmark stats will shown in the terminal which looks like the followi
 
 ![Screenshot](images/benchmarking.png)
 
+All of the steps could be viewd in the jupyter notebook.
 
 ## Screen Recording
-*TODO* Provide a link to a screen recording of the project in action. Remember that the screencast should demonstrate:
+You can watch a screencast demo from the link [here](https://youtu.be/nu0YWzkXIos) ~ 6 min
 
 ## Standout Suggestions
-*TODO (Optional):* This is where you can provide information about any standout suggestions that you have attempted.
+* getting the terminal commands into the jupyter notebook for better visualization purposes. 
+* obtain sensitive information (API URI and primary key) dynamically from code
+* Attempt to deploy the best model to ACI (wasn't successful)

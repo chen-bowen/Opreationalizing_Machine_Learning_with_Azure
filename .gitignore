@@ -6,3 +6,4 @@ automl_errors.log
 data.json
 env/
 azureml/
+.vscode
