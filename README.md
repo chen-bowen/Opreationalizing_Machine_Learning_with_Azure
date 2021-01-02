@@ -329,6 +329,14 @@ All of the steps could be viewd in the jupyter notebook.
 You can watch a screencast demo from the link [here](https://youtu.be/nx3_LPhnGgI) ~ 5 min
 
 ## Future Improvements
+
+* **Data balancing** - Dataset currently has a strong bias towards 0 class, AutoML has already alerted us on that. Some data balancing techniques (like over/under sampling) could be employed to tackle this issue
+
+* **Automate deployment of best model** - Right now, with the pipeline rest endpoint we are able to kick off automatic autoML runs, but there's no easy way to automate the process of automatically deploy the new best model. Some more extensive work on the Azure SDK could potentially solve this issue
+
+* **Full control on deployment environment** - Azure Container Instance (ACI) offers an easy way for deployments, but lack of configuration customization capablities. We could potentially try to deploy the model to Azure Kuberneted Instance (AKI) to get full control over the environment the model is running in
+
+## Standout Suggestions
 * getting the terminal commands into the jupyter notebook for better visualization purposes. 
 * obtain sensitive information (API URI and primary key) dynamically from code
 * Attempt to deploy the best model to ACI (wasn't successful)
